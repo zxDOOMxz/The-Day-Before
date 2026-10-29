@@ -12,6 +12,7 @@ class ULeanComponent;
 class UBreathComponent;
 class USpringArmComponent;
 class UTDBWeaponComponent;
+class UTDBInventoryComponent;
 
 /**
  * Base character class for The Day Before
@@ -44,6 +45,10 @@ public:
 	// Weapon component (manages weapon holding)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
 	UTDBWeaponComponent* WeaponComponent;
+
+	// Inventory component (manages items and equipment)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
+	UTDBInventoryComponent* InventoryComponent;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

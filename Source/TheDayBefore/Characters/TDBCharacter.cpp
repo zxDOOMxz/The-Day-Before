@@ -5,6 +5,7 @@
 #include "Tactical/LeanComponent.h"
 #include "Tactical/BreathComponent.h"
 #include "Weapons/TDBWeaponComponent.h"
+#include "Inventory/TDBInventoryComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -45,6 +46,9 @@ ATDBCharacter::ATDBCharacter()
 
 	// Create weapon component
 	WeaponComponent = CreateDefaultSubobject<UTDBWeaponComponent>(TEXT("WeaponComponent"));
+
+	// Create inventory component
+	InventoryComponent = CreateDefaultSubobject<UTDBInventoryComponent>(TEXT("InventoryComponent"));
 
 	// Configure input
 	bUseControllerRotationPitch = false;

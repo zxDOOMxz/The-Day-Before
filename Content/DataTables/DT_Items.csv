@@ -1,0 +1,12 @@
+ItemId,DisplayName,Description,Icon,WorldMesh,InventorySize,Weight,Category,Rarity,MaxStackSize,BaseValue
+---,BeginTable
+Pistol_Ammo,9mm Pistol Ammo,Standard 9mm ammunition,,/Game/Weapons/Meshes/Ammo_9mm,1 2,0.5,Ammo,Common,60,10
+Rifle_Ammo,5.56 Rifle Ammo,5.56x45mm NATO rounds,,/Game/Weapons/Meshes/Ammo_556,1 2,0.8,Ammo,Common,40,15
+Bandage,Bandage,Basic medical bandage for wounds,,/Game/Items/Meshes/Bandage,1 1,0.2,Medical,Common,5,25
+Medkit,First Aid Kit,Complete medical kit,,/Game/Items/Meshes/Medkit,2 2,2.0,Medical,Uncommon,1,500
+Water_Bottle,Water Bottle,Clean drinking water,,/Game/Items/Meshes/WaterBottle,1 2,1.0,Food,Common,3,50
+Canned_Food,Canned Food,Non-perishable food supply,,/Game/Items/Meshes/CannedFood,1 1,0.5,Food,Common,10,30
+Scrap_Metal,Scrap Metal,Useful for crafting,,/Game/Items/Meshes/ScrapMetal,1 1,1.5,Resource,Common,20,15
+Electronics,Electronics,Circuit boards and components,,/Game/Items/Meshes/Electronics,1 1,0.8,Resource,Uncommon,5,100
+Key_Card,Security Key Card,Grants access to restricted areas,,/Game/Items/Meshes/KeyCard,1 1,0.1,Key,Rare,1,1000
+Dogtag,Soldier Dogtag,Military identification,,/Game/Items/Meshes/Dogtag,1 1,0.1,Quest,Rare,1,0

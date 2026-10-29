@@ -9,6 +9,9 @@
 #include "Tactical/TDBLeanComponent.h"
 #include "Tactical/TDBBreathComponent.h"
 #include "Weapons/TDBWeaponComponent.h"
+#include "Inventory/TDBInventoryComponent.h"
+#include "Inventory/TDBItemPickup.h"
+#include "Kismet/GameplayStatics.h"
 
 ATDBPlayerController::ATDBPlayerController()
 {
@@ -125,6 +128,12 @@ void ATDBPlayerController::SetupInputComponent()
 		if (ReloadAction)
 		{
 			EnhancedInput->BindAction(ReloadAction, ETriggerEvent::Started, this, &ATDBPlayerController::HandleReload);
+		}
+
+		// Interact (pickup items)
+		if (InteractAction)
+		{
+			EnhancedInput->BindAction(InteractAction, ETriggerEvent::Started, this, &ATDBPlayerController::HandleInteract);
 		}
 	}
 }
@@ -293,5 +302,47 @@ void ATDBPlayerController::HandleReload(const FInputActionValue& Value)
 	if (Character && Character->WeaponComponent)
 	{
 		Character->WeaponComponent->Reload();
+	}
+}
+
+void ATDBPlayerController::HandleInteract(const FInputActionValue& Value)
+{
+	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
+	if (!Character || !Character->InventoryComponent)
+	{
+		return;
+	}
+
+	// Find nearby item pickup
+	// TODO: Implement proper interaction system with trace
+	// For now, this is a placeholder - will need line trace to find nearest pickup
+	
+	UE_LOG(LogTemp, Log, TEXT("Interact pressed - pickup system needs implementation"));
+	
+	// Example: Find all pickups in radius and pick up nearest one
+	// This should be replaced with proper interaction trace
+	TArray<AActor*> NearbyPickups;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATDBItemPickup::StaticClass(), NearbyPickups);
+	
+	float MinDistance = 200.0f; // 2 meters
+	ATDBItemPickup* NearestPickup = nullptr;
+	
+	for (AActor* Actor : NearbyPickups)
+	{
+		ATDBItemPickup* Pickup = Cast<ATDBItemPickup>(Actor);
+		if (Pickup)
+		{
+			float Distance = FVector::Dist(Character->GetActorLocation(), Pickup->GetActorLocation());
+			if (Distance < MinDistance && Pickup->CanBePickedUp(Character->InventoryComponent))
+			{
+				MinDistance = Distance;
+				NearestPickup = Pickup;
+			}
+		}
+	}
+	
+	if (NearestPickup)
+	{
+		NearestPickup->PickUp(Character->InventoryComponent);
 	}
 }
