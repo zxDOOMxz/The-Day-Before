@@ -3,7 +3,7 @@
 > Этот документ для нейросети. Содержит текущий статус проекта, что сделано, что нужно тестировать, и что делать дальше.
 
 **Последнее обновление:** 29 октября 2026  
-**Статус:** Phase 0, Week 2 завершена  
+**Статус:** Phase 0, Week 3 завершена (Инвентарь готов)  
 **Репозиторий:** https://github.com/zxDOOMxz/The-Day-Before
 
 ---
@@ -44,8 +44,9 @@
 
 - `Source/TheDayBefore/GameFramework/TDBPlayerController.h/.cpp`
   - Enhanced Input система
-  - Input Actions: Move, Look, Jump, Crouch, Sprint, Aim, Lean, Breath, Fire, Reload
-  - Маппинги на WASD, мышь, Shift, Q/E, Space, C
+  - Input Actions: Move, Look, Jump, Crouch, Sprint, Aim, Lean, Breath, Fire, Reload, Interact
+  - Маппинги на WASD, мышь, Shift, Q/E, Space, C, E (подбор)
+  - **HandleInteract()** — подбор ближайшего предмета в радиусе 2м
 
 - `Source/TheDayBefore/GameFramework/TDBGameInstance.h/.cpp`
   - Управление глобальными системами
@@ -78,6 +79,36 @@
     - Arms: ×0.8-1.0
     - Legs: ×0.7-1.0
   - Система пробития брони (Penetration vs ArmorValue)
+
+#### 6. Система инвентаря (Week 3)
+**Файлы:**
+- `Source/TheDayBefore/Inventory/TDBItemTypes.h`
+  - `FItemDefinition` — статические данные предмета (DataTable)
+    - Свойства: Id, Name, Description, Icon, Mesh, Weight, Size, Category, Rarity, StackSize, Value
+    - Категории: Weapon, Armor, Ammo, Medical, Food, Resource, Key, Misc
+    - Редкость: Common, Uncommon, Rare, Epic, Legendary
+  - `FItemInstance` — экземпляр предмета в инвентаре
+    - Свойства: ItemId, Quantity
+    - Поддержка стеков
+
+- `Source/TheDayBefore/Inventory/TDBInventoryComponent.h/.cpp`
+  - Grid-based инвентарь (10x5 слотов)
+  - Система веса (макс 100кг)
+  - Функции: AddItem(), RemoveItem(), HasItem(), GetItemCount()
+  - События: OnInventoryChanged, OnItemAdded, OnItemRemoved
+  - Сетевая репликация (Items array)
+
+- `Source/TheDayBefore/Inventory/TDBItemPickup.h/.cpp`
+  - Подбор предметов из мира
+  - Collision sphere (радиус 2м)
+  - Mesh для визуализации
+  - Функции: CanBePickedUp(), PickUp()
+  - Overlap события для UI подсказок
+
+- `Content/DataTables/DT_Items.csv`
+  - Пример таблицы предметов
+  - 10 предметов: Pistol_Ammo, Rifle_Ammo, Bandage, Medkit, Water_Bottle, Canned_Food, Scrap_Metal, Electronics, Key_Card, Dogtag
+  - Используется как DataTable в UE
 
 ### ⚙️ Конфигурация
 
@@ -149,6 +180,7 @@
 - `IA_HoldBreath` → Value: Digital (bool)
 - `IA_Fire` → Value: Digital (bool)
 - `IA_Reload` → Value: Digital (bool)
+- `IA_Interact` → Value: Digital (bool) **(NEW for inventory)**
 
 ### Шаг 4: Создать Input Mapping Context
 
@@ -170,6 +202,7 @@ E            → IA_LeanRight
 Left Shift   → IA_HoldBreath (while aiming)
 Left Mouse   → IA_Fire
 R            → IA_Reload
+E            → IA_Interact **(NEW for inventory pickup)**
 ```
 
 ### Шаг 5: Настроить Character Blueprint
@@ -195,7 +228,20 @@ R            → IA_Reload
    - Assign all Input Actions (`IA_Move`, `IA_Look`, etc.)
    - Assign `DefaultMappingContext` = `IMC_Default`
 
-### Шаг 6: Создать тестовый уровень
+### Шаг 6: Импортировать DataTable предметов (NEW)
+
+**Путь:** `Content/DataTables/`
+
+1. Импортируй CSV файл:
+   - File → Import to `/Game/DataTables/`
+   - Выбери `DT_Items.csv` из `Content/DataTables/`
+   - UE создаст DataTable с именем `DT_Items`
+
+2. Проверь структуру:
+   - Row Structure: `FItemDefinition`
+   - Должно быть 10 строк (предметов)
+
+### Шаг 7: Создать тестовый уровень
 
 **Путь:** `Content/Maps/Dev/`
 
@@ -206,12 +252,13 @@ R            → IA_Reload
    - Lighting (Sun + Sky Light)
    - Sky Sphere
    - Несколько объектов для укрытий (коробки, стены)
+   - **TDBItemPickup** → размести 3-5 предметов (например, Medkit, Pistol_Ammo x2)
 
 3. В World Settings:
    - GameMode Override → `TDBGameMode`
    - Default Pawn → `BP_TDBCharacter`
 
-### Шаг 7: Тестирование
+### Шаг 8: Тестирование
 
 Запусти PIE (Play In Editor) и проверь:
 
@@ -241,7 +288,15 @@ LogTemp: TheDayBefore Module Started
 LogTemp: Damage System Initialized
 LogTemp: TheDayBefore GameInstance Initialized
 LogTemp: Pistol initialized
+LogTemp: Added item: [ItemId] x[Quantity] **(NEW)**
+LogTemp: Picked up item: [ItemId] x[Quantity] **(NEW)**
 ```
+
+**Подбор предметов (NEW):**
+- ✅ Подойди к TDBItemPickup (в радиусе 2м)
+- ✅ Нажми E — предмет добавляется в инвентарь
+- ✅ Проверь в логах сообщение "Picked up item"
+- ✅ Предмет исчезает из мира
 
 ---
 
@@ -270,18 +325,17 @@ LogTemp: Pistol initialized
 
 ### Что НЕ реализовано (следующие этапы):
 
-#### Week 3: Инвентарь
-- ❌ Система инвентаря (сетка, слоты)
-- ❌ Предметы (FItemDefinition, FItemInstance)
-- ❌ Контейнеры (рюкзак, карманы)
-- ❌ UI инвентаря (drag-and-drop)
-- ❌ Подбор лута с земли
-
 #### Week 4: Блокаут карты
 - ❌ Базовый ландшафт (64 км²)
 - ❌ Биомы (город, лес, промзона)
 - ❌ Здания (серые боксы)
 - ❌ World Partition настройка
+
+#### Week 5: UI и полировка
+- ❌ UI инвентаря (UMG виджет с сеткой)
+- ❌ Drag-and-drop предметов
+- ❌ Визуализация веса
+- ❌ Подсказки взаимодействия ("Press E to pickup")
 
 ---
 
@@ -327,12 +381,14 @@ TheDayBefore/
 │   ├── Tactical/
 │   ├── Weapons/
 │   ├── Combat/
+│   ├── Inventory/      **(NEW)**
 │   └── GameFramework/
 ├── Content/
 │   ├── Characters/
 │   ├── Weapons/
 │   ├── Maps/
 │   ├── Input/
+│   ├── DataTables/     **(NEW)**
 │   └── ...
 ├── Config/
 │   ├── DefaultEngine.ini
@@ -354,6 +410,10 @@ TheDayBefore/
 - `ATDBPistol` → пример пистолета
 - `UTDBWeaponComponent` → управление оружием
 - `UTDBDamageSystem` → система урона
+- `UTDBInventoryComponent` → инвентарь **(NEW)**
+- `ATDBItemPickup` → подбор предметов **(NEW)**
+- `FItemDefinition` → структура предмета **(NEW)**
+- `FItemInstance` → экземпляр предмета **(NEW)**
 - `ATDBGameMode` → игровые правила
 - `ATDBPlayerController` → ввод
 - `UTDBGameInstance` → глобальные системы
@@ -363,6 +423,7 @@ TheDayBefore/
 - `LeanState` → наклон
 - `AimState` → прицеливание
 - `BreathStamina` → дыхание
+- `Items` array → инвентарь **(NEW)**
 
 ### Важные сокеты:
 - `weapon_r` → правая рука для оружия
@@ -396,6 +457,12 @@ TheDayBefore/
 **Оружие:**
 - Left Mouse — стрельба
 - R — перезарядка
+
+**Инвентарь:**
+- E — подобрать предмет (в радиусе 2м)
+
+**Инвентарь (NEW):**
+- E — подобрать предмет (в радиусе 2м)
 
 ---
 
