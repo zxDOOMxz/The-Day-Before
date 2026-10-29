@@ -21,13 +21,13 @@ public class TheDayBefore : ModuleRules
 			"Niagara",
 			"UMG",
 			"Slate",
-			"SlateCore"
+			"SlateCore",
+			"GameplayAbilities",
+			"GameplayTags"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]
 		{
-			"GameplayAbilities",
-			"GameplayTags",
 			"NetCore"
 		});
 

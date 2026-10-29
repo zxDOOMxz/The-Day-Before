@@ -8,6 +8,7 @@
 #include "Camera/TDBFirstPersonCameraComponent.h"
 #include "Tactical/TDBLeanComponent.h"
 #include "Tactical/TDBBreathComponent.h"
+#include "Weapons/TDBWeaponComponent.h"
 
 ATDBPlayerController::ATDBPlayerController()
 {
@@ -111,6 +112,19 @@ void ATDBPlayerController::SetupInputComponent()
 		if (InventoryAction)
 		{
 			EnhancedInput->BindAction(InventoryAction, ETriggerEvent::Started, this, &ATDBPlayerController::HandleInventory);
+		}
+
+		// Fire
+		if (FireAction)
+		{
+			EnhancedInput->BindAction(FireAction, ETriggerEvent::Started, this, &ATDBPlayerController::HandleFire);
+			EnhancedInput->BindAction(FireAction, ETriggerEvent::Completed, this, &ATDBPlayerController::HandleFireReleased);
+		}
+
+		// Reload
+		if (ReloadAction)
+		{
+			EnhancedInput->BindAction(ReloadAction, ETriggerEvent::Started, this, &ATDBPlayerController::HandleReload);
 		}
 	}
 }
@@ -253,4 +267,31 @@ void ATDBPlayerController::HandleInteract(const FInputActionValue& Value)
 void ATDBPlayerController::HandleInventory(const FInputActionValue& Value)
 {
 	// TODO: Toggle inventory UI
+}
+
+void ATDBPlayerController::HandleFire(const FInputActionValue& Value)
+{
+	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
+	if (Character && Character->WeaponComponent)
+	{
+		Character->WeaponComponent->Fire();
+	}
+}
+
+void ATDBPlayerController::HandleFireReleased(const FInputActionValue& Value)
+{
+	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
+	if (Character && Character->WeaponComponent)
+	{
+		Character->WeaponComponent->StopFire();
+	}
+}
+
+void ATDBPlayerController::HandleReload(const FInputActionValue& Value)
+{
+	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
+	if (Character && Character->WeaponComponent)
+	{
+		Character->WeaponComponent->Reload();
+	}
 }

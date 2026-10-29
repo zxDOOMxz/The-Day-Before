@@ -4,6 +4,7 @@
 #include "Camera/FirstPersonCameraComponent.h"
 #include "Tactical/LeanComponent.h"
 #include "Tactical/BreathComponent.h"
+#include "Weapons/TDBWeaponComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -41,6 +42,9 @@ ATDBCharacter::ATDBCharacter()
 	// Create tactical components
 	LeanComponent = CreateDefaultSubobject<ULeanComponent>(TEXT("LeanComponent"));
 	BreathComponent = CreateDefaultSubobject<UBreathComponent>(TEXT("BreathComponent"));
+
+	// Create weapon component
+	WeaponComponent = CreateDefaultSubobject<UTDBWeaponComponent>(TEXT("WeaponComponent"));
 
 	// Configure input
 	bUseControllerRotationPitch = false;

@@ -11,6 +11,7 @@ class UFirstPersonCameraComponent;
 class ULeanComponent;
 class UBreathComponent;
 class USpringArmComponent;
+class UTDBWeaponComponent;
 
 /**
  * Base character class for The Day Before
@@ -39,6 +40,10 @@ public:
 	// Breath component (hold breath while aiming)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tactical", meta = (AllowPrivateAccess = "true"))
 	UBreathComponent* BreathComponent;
+
+	// Weapon component (manages weapon holding)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
+	UTDBWeaponComponent* WeaponComponent;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

@@ -60,6 +60,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	UInputAction* InventoryAction;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	UInputAction* FireAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	UInputAction* ReloadAction;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -80,6 +86,9 @@ protected:
 	void HandleHoldBreathReleased(const FInputActionValue& Value);
 	void HandleInteract(const FInputActionValue& Value);
 	void HandleInventory(const FInputActionValue& Value);
+	void HandleFire(const FInputActionValue& Value);
+	void HandleFireReleased(const FInputActionValue& Value);
+	void HandleReload(const FInputActionValue& Value);
 
 private:
 	void SetupInputMapping();
