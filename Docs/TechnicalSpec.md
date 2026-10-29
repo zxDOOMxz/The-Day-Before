@@ -132,6 +132,178 @@ public:
 - Независимое тестирование компонентов
 - Гибкая настройка через Blueprint
 
+### 1.5 FPS-камера (First Person Camera System)
+
+**Компонентная структура камеры от первого лица:**
+
+```cpp
+UCLASS()
+class AFirstPersonCharacter : public ACharacter
+{
+    GENERATED_BODY()
+
+public:
+    // FPS Camera Component
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+    class UFirstPersonCameraComponent* FPS Camera;
+
+    // Arms mesh (видимые руки с оружием)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
+    class USkeletalMeshComponent* ArmsMesh;
+
+    // Lean компонент (наклон из-за укрытий)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tactical")
+    class ULeanComponent* LeanComponent;
+
+    // Breath компонент (задержка дыхания при прицеливании)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tactical")
+    class UBreathComponent* BreathComponent;
+
+    // Head bob компонент (покачивание камеры)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+    class UHeadBobComponent* HeadBobComponent;
+};
+```
+
+**UFirstPersonCameraComponent** — основная FPS камера:
+
+```cpp
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+class UFirstPersonCameraComponent : public UCameraComponent
+{
+    GENERATED_BODY()
+
+public:
+    UFirstPersonCameraComponent();
+
+    // Текущее состояние прицеливания (0 = hip, 1 = full ADS)
+    UPROPERTY(ReplicatedUsing = OnRep_AimState, EditAnywhere, BlueprintReadOnly, Category = "Aiming")
+    float AimState;
+
+    // Целевое состояние прицеливания
+    UPROPERTY(Transient, BlueprintReadOnly, Category = "Aiming")
+    float TargetAimState;
+
+    // Текущий FOV (изменяется при ADS)
+    UPROPERTY(Transient, BlueprintReadOnly, Category = "Camera")
+    float CurrentFOV;
+
+    // Базовый FOV (по умолчанию 90)
+    UPROPERTY(EditDefaultsOnly, Category = "Camera")
+    float DefaultFOV = 90.0f;
+
+    // Минимальный FOV при полном ADS
+    UPROPERTY(EditDefaultsOnly, Category = "Camera")
+    float ADSFOV = 45.0f;
+
+    // Скорость интерполяции ADS
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Aiming")
+    float AimInterpSpeed = 15.0f;
+
+    // Прицеливание (вызывается из Input)
+    void StartAiming();
+    void StopAiming();
+
+    // Обновление камеры
+    virtual void TickComponent(float DeltaTime) override;
+
+    UFUNCTION()
+    void OnRep_AimState();
+};
+```
+
+**ULeanComponent** — наклон из-за укрытий (Q/E):
+
+```cpp
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+class ULeanComponent : public UActorComponent
+{
+    GENERATED_BODY()
+
+public:
+    ULeanComponent();
+
+    // Текущий наклон (-1 = влево, 0 = центр, 1 = вправо)
+    UPROPERTY(ReplicatedUsing = OnRep_LeanState, BlueprintReadOnly, Category = "Lean")
+    float LeanState;
+
+    // Максимальный угол наклона (градусы)
+    UPROPERTY(EditAnywhere, Category = "Lean")
+    float MaxLeanAngle = 15.0f;
+
+    // Максимальное смещение камеры
+    UPROPERTY(EditAnywhere, Category = "Lean")
+    float MaxLeanOffset = 30.0f;
+
+    // Скорость наклона
+    UPROPERTY(EditAnywhere, Category = "Lean")
+    float LeanSpeed = 8.0f;
+
+    // Lean функции
+    void StartLeanLeft();
+    void StartLeanRight();
+    void StopLean();
+
+    virtual void TickComponent(float DeltaTime) override;
+
+    UFUNCTION()
+    void OnRep_LeanState();
+};
+```
+
+**UBreathComponent** — задержка дыхания при прицеливании:
+
+```cpp
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+class UBreathComponent : public UActorComponent
+{
+    GENERATED_BODY()
+
+public:
+    UBreathComponent();
+
+    // Стамина для дыхания
+    UPROPERTY(Replicated, BlueprintReadOnly, Category = "Breath")
+    float BreathStamina = 100.0f;
+
+    // Максимальная стамина
+    UPROPERTY(EditAnywhere, Category = "Breath")
+    float MaxBreathStamina = 100.0f;
+
+    // Скорость потребления стамины (в секунду)
+    UPROPERTY(EditAnywhere, Category = "Breath")
+    float BreathDrainRate = 10.0f;
+
+    // Скорость восстановления стамины
+    UPROPERTY(EditAnywhere, Category = "Breath")
+    float BreathRecoveryRate = 15.0f;
+
+    // Сила дрожания камеры (зависит от стамины)
+    UPROPERTY(Transient, BlueprintReadOnly, Category = "Breath")
+    float BreathSwayIntensity;
+
+    // Задержка дыхания (Shift при ADS)
+    void HoldBreath();
+    void ReleaseBreath();
+
+    virtual void TickComponent(float DeltaTime) override;
+};
+```
+
+**Конфигурация камеры (DefaultEngine.ini):**
+
+```ini
+[/Script/TheDayBefore.FirstPersonCameraSettings]
+DefaultFOV=90.0
+ADSInterpSpeed=15.0
+HeadBobEnabled=True
+HeadBobWalkingIntensity=0.5
+HeadBobRunningIntensity=1.5
+HeadBobCrouchIntensity=0.2
+CameraLagEnabled=True
+CameraLagSpeed=10.0
+```
+
 ---
 
 ## 2. Структуры данных
