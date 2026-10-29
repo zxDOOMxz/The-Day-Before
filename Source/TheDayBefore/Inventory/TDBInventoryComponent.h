@@ -64,8 +64,7 @@ public:
     UFUNCTION(BlueprintPure, Category = "Inventory")
     int32 GetItemCount(FName ItemId) const;
 
-    // Get item definition by ID
-    UFUNCTION(BlueprintPure, Category = "Inventory")
+    // Get item definition by ID (returns pointer to struct - not exposed to Blueprints)
     const FItemDefinition* GetItemDefinition(FName ItemId) const;
 
     // Get current weight

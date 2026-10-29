@@ -6,7 +6,7 @@ public class TheDayBeforeServer : ModuleRules
 {
 	public TheDayBeforeServer(ReadOnlyTargetRules Target) : base(Target)
 	{
-		PCHUsage = PCHUsageMode.UseExplicitSharedPCHs;
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[]
 		{

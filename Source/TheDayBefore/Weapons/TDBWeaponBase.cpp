@@ -7,6 +7,7 @@
 #include "Net/UnrealNetwork.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/PlayerController.h"
+#include "Engine/GameInstance.h"
 #include "Sound/SoundCue.h"
 #include "Kismet/GameplayStatics.h"
 #include "Combat/TDBDamageSystem.h"
@@ -87,8 +88,8 @@ void ATDBWeaponBase::FireWeapon()
 	if (GetLocalRole() == ROLE_Authority)
 	{
 		// Perform raycast for hit detection
-		ACharacter* Owner = Cast<ACharacter>(GetOwner());
-		APlayerController* PC = Cast<APlayerController>(Owner ? Owner->GetController() : nullptr);
+		ACharacter* OwnerCharacter = Cast<ACharacter>(GetOwner());
+		APlayerController* PC = Cast<APlayerController>(OwnerCharacter ? OwnerCharacter->GetController() : nullptr);
 		
 		if (PC)
 		{
@@ -107,9 +108,9 @@ void ATDBWeaponBase::FireWeapon()
 			FHitResult HitResult;
 			FCollisionQueryParams QueryParams;
 			QueryParams.AddIgnoredActor(this);
-			if (Owner)
+			if (OwnerCharacter)
 			{
-				QueryParams.AddIgnoredActor(Owner);
+				QueryParams.AddIgnoredActor(OwnerCharacter);
 			}
 
 			if (GetWorld()->LineTraceSingleByChannel(HitResult, CameraLoc, TraceEnd, ECC_Visibility, QueryParams))
@@ -140,8 +141,8 @@ void ATDBWeaponBase::FireWeapon()
 
 void ATDBWeaponBase::ApplyRecoil()
 {
-	ACharacter* Owner = Cast<ACharacter>(GetOwner());
-	APlayerController* PC = Cast<APlayerController>(Owner ? Owner->GetController() : nullptr);
+	ACharacter* OwnerCharacter = Cast<ACharacter>(GetOwner());
+	APlayerController* PC = Cast<APlayerController>(OwnerCharacter ? OwnerCharacter->GetController() : nullptr);
 
 	if (PC)
 	{

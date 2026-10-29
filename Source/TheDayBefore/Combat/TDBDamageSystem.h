@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DamageEvents.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "TDBDamageSystem.generated.h"
 
 /**

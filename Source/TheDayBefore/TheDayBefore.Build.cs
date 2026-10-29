@@ -6,7 +6,10 @@ public class TheDayBefore : ModuleRules
 {
 	public TheDayBefore(ReadOnlyTargetRules Target) : base(Target)
 	{
-		PCHUsage = PCHUsageMode.UseExplicitSharedPCHs;
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
+		// Module headers live in subdirectories (Tactical/, Camera/, etc.), so add the module root to include paths
+		PublicIncludePaths.Add(ModuleDirectory);
 
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
@@ -21,9 +24,7 @@ public class TheDayBefore : ModuleRules
 			"Niagara",
 			"UMG",
 			"Slate",
-			"SlateCore",
-			"GameplayAbilities",
-			"GameplayTags"
+			"SlateCore"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]
@@ -31,9 +32,6 @@ public class TheDayBefore : ModuleRules
 			"NetCore"
 		});
 
-		// FPS Camera specific
-		PublicDependencyModuleNames.Add("CameraCalibrationCore");
-		
 		// For replicated properties
 		if (Target.bBuildEditor == false)
 		{

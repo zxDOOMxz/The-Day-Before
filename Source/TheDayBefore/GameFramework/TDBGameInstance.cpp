@@ -7,19 +7,15 @@ void UTDBGameInstance::Init()
 {
 	Super::Init();
 
-	// Initialize damage system
-	DamageSystem = NewObject<UTDBDamageSystem>(this, UTDBDamageSystem::StaticClass());
-	DamageSystem->Initialize(FSubsystemCollectionBase());
+	// Damage system is auto-created as a GameInstanceSubsystem
+	DamageSystem = GetSubsystem<UTDBDamageSystem>();
 
 	UE_LOG(LogTemp, Log, TEXT("TheDayBefore GameInstance Initialized"));
 }
 
 void UTDBGameInstance::Shutdown()
 {
-	if (DamageSystem)
-	{
-		DamageSystem->Deinitialize();
-	}
+	DamageSystem = nullptr;
 
 	Super::Shutdown();
 }

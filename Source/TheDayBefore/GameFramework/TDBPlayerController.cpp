@@ -129,12 +129,6 @@ void ATDBPlayerController::SetupInputComponent()
 		{
 			EnhancedInput->BindAction(ReloadAction, ETriggerEvent::Started, this, &ATDBPlayerController::HandleReload);
 		}
-
-		// Interact (pickup items)
-		if (InteractAction)
-		{
-			EnhancedInput->BindAction(InteractAction, ETriggerEvent::Started, this, &ATDBPlayerController::HandleInteract);
-		}
 	}
 }
 
@@ -168,25 +162,25 @@ void ATDBPlayerController::HandleLook(const FInputActionValue& Value)
 
 void ATDBPlayerController::HandleJump(const FInputActionValue& Value)
 {
-	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
-	if (Character)
+	ATDBCharacter* PlayerCharacter = Cast<ATDBCharacter>(GetPawn());
+	if (PlayerCharacter)
 	{
-		Character->Jump();
+		PlayerCharacter->Jump();
 	}
 }
 
 void ATDBPlayerController::HandleCrouch(const FInputActionValue& Value)
 {
-	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
-	if (Character)
+	ATDBCharacter* PlayerCharacter = Cast<ATDBCharacter>(GetPawn());
+	if (PlayerCharacter)
 	{
-		if (Character->bIsCrouched)
+		if (PlayerCharacter->bIsCrouched)
 		{
-			Character->UnCrouch();
+			PlayerCharacter->UnCrouch();
 		}
 		else
 		{
-			Character->Crouch();
+			PlayerCharacter->Crouch();
 		}
 	}
 }
@@ -198,79 +192,74 @@ void ATDBPlayerController::HandleSprint(const FInputActionValue& Value)
 
 void ATDBPlayerController::HandleAim(const FInputActionValue& Value)
 {
-	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
-	if (Character && Character->FirstPersonCameraComponent)
+	ATDBCharacter* PlayerCharacter = Cast<ATDBCharacter>(GetPawn());
+	if (PlayerCharacter && PlayerCharacter->FirstPersonCameraComponent)
 	{
-		Character->FirstPersonCameraComponent->StartAiming();
+		PlayerCharacter->FirstPersonCameraComponent->StartAiming();
 	}
 }
 
 void ATDBPlayerController::HandleAimReleased(const FInputActionValue& Value)
 {
-	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
-	if (Character && Character->FirstPersonCameraComponent)
+	ATDBCharacter* PlayerCharacter = Cast<ATDBCharacter>(GetPawn());
+	if (PlayerCharacter && PlayerCharacter->FirstPersonCameraComponent)
 	{
-		Character->FirstPersonCameraComponent->StopAiming();
+		PlayerCharacter->FirstPersonCameraComponent->StopAiming();
 	}
 }
 
 void ATDBPlayerController::HandleLeanLeft(const FInputActionValue& Value)
 {
-	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
-	if (Character && Character->LeanComponent)
+	ATDBCharacter* PlayerCharacter = Cast<ATDBCharacter>(GetPawn());
+	if (PlayerCharacter && PlayerCharacter->LeanComponent)
 	{
-		Character->LeanComponent->StartLeanLeft();
+		PlayerCharacter->LeanComponent->StartLeanLeft();
 	}
 }
 
 void ATDBPlayerController::HandleLeanLeftReleased(const FInputActionValue& Value)
 {
-	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
-	if (Character && Character->LeanComponent)
+	ATDBCharacter* PlayerCharacter = Cast<ATDBCharacter>(GetPawn());
+	if (PlayerCharacter && PlayerCharacter->LeanComponent)
 	{
-		Character->LeanComponent->StopLean();
+		PlayerCharacter->LeanComponent->StopLean();
 	}
 }
 
 void ATDBPlayerController::HandleLeanRight(const FInputActionValue& Value)
 {
-	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
-	if (Character && Character->LeanComponent)
+	ATDBCharacter* PlayerCharacter = Cast<ATDBCharacter>(GetPawn());
+	if (PlayerCharacter && PlayerCharacter->LeanComponent)
 	{
-		Character->LeanComponent->StartLeanRight();
+		PlayerCharacter->LeanComponent->StartLeanRight();
 	}
 }
 
 void ATDBPlayerController::HandleLeanRightReleased(const FInputActionValue& Value)
 {
-	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
-	if (Character && Character->LeanComponent)
+	ATDBCharacter* PlayerCharacter = Cast<ATDBCharacter>(GetPawn());
+	if (PlayerCharacter && PlayerCharacter->LeanComponent)
 	{
-		Character->LeanComponent->StopLean();
+		PlayerCharacter->LeanComponent->StopLean();
 	}
 }
 
 void ATDBPlayerController::HandleHoldBreath(const FInputActionValue& Value)
 {
-	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
-	if (Character && Character->BreathComponent)
+	ATDBCharacter* PlayerCharacter = Cast<ATDBCharacter>(GetPawn());
+	if (PlayerCharacter && PlayerCharacter->BreathComponent)
 	{
-		Character->BreathComponent->HoldBreath();
+		PlayerCharacter->BreathComponent->HoldBreath();
 	}
 }
 
 void ATDBPlayerController::HandleHoldBreathReleased(const FInputActionValue& Value)
 {
-	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
-	if (Character && Character->BreathComponent)
+	ATDBCharacter* PlayerCharacter = Cast<ATDBCharacter>(GetPawn());
+	if (PlayerCharacter && PlayerCharacter->BreathComponent)
 	{
-		Character->BreathComponent->ReleaseBreath();
+		PlayerCharacter->BreathComponent->ReleaseBreath();
 	}
-}
-
-void ATDBPlayerController::HandleInteract(const FInputActionValue& Value)
-{
-	// TODO: Implement interaction system
 }
 
 void ATDBPlayerController::HandleInventory(const FInputActionValue& Value)
@@ -280,35 +269,35 @@ void ATDBPlayerController::HandleInventory(const FInputActionValue& Value)
 
 void ATDBPlayerController::HandleFire(const FInputActionValue& Value)
 {
-	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
-	if (Character && Character->WeaponComponent)
+	ATDBCharacter* PlayerCharacter = Cast<ATDBCharacter>(GetPawn());
+	if (PlayerCharacter && PlayerCharacter->WeaponComponent)
 	{
-		Character->WeaponComponent->Fire();
+		PlayerCharacter->WeaponComponent->Fire();
 	}
 }
 
 void ATDBPlayerController::HandleFireReleased(const FInputActionValue& Value)
 {
-	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
-	if (Character && Character->WeaponComponent)
+	ATDBCharacter* PlayerCharacter = Cast<ATDBCharacter>(GetPawn());
+	if (PlayerCharacter && PlayerCharacter->WeaponComponent)
 	{
-		Character->WeaponComponent->StopFire();
+		PlayerCharacter->WeaponComponent->StopFire();
 	}
 }
 
 void ATDBPlayerController::HandleReload(const FInputActionValue& Value)
 {
-	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
-	if (Character && Character->WeaponComponent)
+	ATDBCharacter* PlayerCharacter = Cast<ATDBCharacter>(GetPawn());
+	if (PlayerCharacter && PlayerCharacter->WeaponComponent)
 	{
-		Character->WeaponComponent->Reload();
+		PlayerCharacter->WeaponComponent->Reload();
 	}
 }
 
 void ATDBPlayerController::HandleInteract(const FInputActionValue& Value)
 {
-	ATDBCharacter* Character = Cast<ATDBCharacter>(GetPawn());
-	if (!Character || !Character->InventoryComponent)
+	ATDBCharacter* PlayerCharacter = Cast<ATDBCharacter>(GetPawn());
+	if (!PlayerCharacter || !PlayerCharacter->InventoryComponent)
 	{
 		return;
 	}
@@ -332,8 +321,8 @@ void ATDBPlayerController::HandleInteract(const FInputActionValue& Value)
 		ATDBItemPickup* Pickup = Cast<ATDBItemPickup>(Actor);
 		if (Pickup)
 		{
-			float Distance = FVector::Dist(Character->GetActorLocation(), Pickup->GetActorLocation());
-			if (Distance < MinDistance && Pickup->CanBePickedUp(Character->InventoryComponent))
+			float Distance = FVector::Dist(PlayerCharacter->GetActorLocation(), Pickup->GetActorLocation());
+			if (Distance < MinDistance && Pickup->CanBePickedUp(PlayerCharacter->InventoryComponent))
 			{
 				MinDistance = Distance;
 				NearestPickup = Pickup;
@@ -343,6 +332,6 @@ void ATDBPlayerController::HandleInteract(const FInputActionValue& Value)
 	
 	if (NearestPickup)
 	{
-		NearestPickup->PickUp(Character->InventoryComponent);
+		NearestPickup->PickUp(PlayerCharacter->InventoryComponent);
 	}
 }

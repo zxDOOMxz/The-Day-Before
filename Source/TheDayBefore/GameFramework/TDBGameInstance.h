@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameInstance.h"
+#include "Engine/GameInstance.h"
 #include "TDBGameInstance.generated.h"
 
 class UTDBDamageSystem;

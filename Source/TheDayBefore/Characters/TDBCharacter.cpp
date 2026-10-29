@@ -1,9 +1,9 @@
 // Copyright TheDayBefore Project. All Rights Reserved.
 
 #include "Characters/TDBCharacter.h"
-#include "Camera/FirstPersonCameraComponent.h"
-#include "Tactical/LeanComponent.h"
-#include "Tactical/BreathComponent.h"
+#include "Camera/TDBFirstPersonCameraComponent.h"
+#include "Tactical/TDBLeanComponent.h"
+#include "Tactical/TDBBreathComponent.h"
 #include "Weapons/TDBWeaponComponent.h"
 #include "Inventory/TDBInventoryComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -27,7 +27,7 @@ ATDBCharacter::ATDBCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 
 	// Create First Person Camera
-	FirstPersonCameraComponent = CreateDefaultSubobject<UFirstPersonCameraComponent>(TEXT("FirstPersonCamera"));
+	FirstPersonCameraComponent = CreateDefaultSubobject<UTDBFirstPersonCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
 	FirstPersonCameraComponent->SetRelativeLocation(FVector(0.f, 0.f, 64.f)); // Eye height
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
@@ -41,8 +41,8 @@ ATDBCharacter::ATDBCharacter()
 	ArmsMesh->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
 	// Create tactical components
-	LeanComponent = CreateDefaultSubobject<ULeanComponent>(TEXT("LeanComponent"));
-	BreathComponent = CreateDefaultSubobject<UBreathComponent>(TEXT("BreathComponent"));
+	LeanComponent = CreateDefaultSubobject<UTDBLeanComponent>(TEXT("LeanComponent"));
+	BreathComponent = CreateDefaultSubobject<UTDBBreathComponent>(TEXT("BreathComponent"));
 
 	// Create weapon component
 	WeaponComponent = CreateDefaultSubobject<UTDBWeaponComponent>(TEXT("WeaponComponent"));

@@ -7,9 +7,9 @@
 #include "Logging/LogMacros.h"
 #include "TDBCharacter.generated.h"
 
-class UFirstPersonCameraComponent;
-class ULeanComponent;
-class UBreathComponent;
+class UTDBFirstPersonCameraComponent;
+class UTDBLeanComponent;
+class UTDBBreathComponent;
 class USpringArmComponent;
 class UTDBWeaponComponent;
 class UTDBInventoryComponent;
@@ -28,7 +28,7 @@ public:
 
 	// FPS Camera Component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
-	UFirstPersonCameraComponent* FirstPersonCameraComponent;
+	UTDBFirstPersonCameraComponent* FirstPersonCameraComponent;
 
 	// Arms mesh (visible hands with weapon)
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
@@ -36,11 +36,11 @@ public:
 
 	// Lean component (Q/E lean from cover)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tactical", meta = (AllowPrivateAccess = "true"))
-	ULeanComponent* LeanComponent;
+	UTDBLeanComponent* LeanComponent;
 
 	// Breath component (hold breath while aiming)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tactical", meta = (AllowPrivateAccess = "true"))
-	UBreathComponent* BreathComponent;
+	UTDBBreathComponent* BreathComponent;
 
 	// Weapon component (manages weapon holding)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
@@ -58,7 +58,7 @@ public:
 
 	// Getters
 	UFUNCTION(BlueprintPure, Category = "Camera")
-	UFirstPersonCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+	UTDBFirstPersonCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 protected:
 	// Called when the game starts or when spawned

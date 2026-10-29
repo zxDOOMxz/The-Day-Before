@@ -8,7 +8,8 @@ public class TheDayBeforeServerTarget : TargetRules
 	public TheDayBeforeServerTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Server;
-		DefaultBuildSettings = BuildSettingsVersion.V5;
+		DefaultBuildSettings = BuildSettingsVersion.Latest;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 		ExtraModuleNames.Add("TheDayBefore");
 	}
 }

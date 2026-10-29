@@ -90,7 +90,6 @@ public:
     int32 BaseValue = 100;
 
     // Is this item stackable?
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
     bool IsStackable() const { return MaxStackSize > 1; }
 };
 
@@ -104,7 +103,7 @@ struct FItemInstance
 
 public:
     // Unique instance ID
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item")
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item", Meta = (IgnoreForMemberInitializationTest))
     FGuid InstanceId;
 
     // Reference to item definition

@@ -25,6 +25,7 @@ void ATDBGameMode::BeginPlay()
 }
 
 void ATDBGameMode::SetupGameSettings()
+{
 	// Game settings can be configured here
 	// For example: starting resources, game rules, etc.
 }

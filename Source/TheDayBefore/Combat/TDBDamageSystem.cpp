@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/DamageType.h"
+#include "Kismet/GameplayStatics.h"
 
 void UTDBDamageSystem::Initialize(FSubsystemCollectionBase& Collection)
 {
