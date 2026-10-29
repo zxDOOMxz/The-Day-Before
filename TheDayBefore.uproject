@@ -17,10 +17,6 @@
 	],
 	"Plugins": [
 		{
-			"Name": "ModelingEditor",
-			"Enabled": true
-		},
-		{
 			"Name": "ModelingToolsEditorMode",
 			"Enabled": true
 		},
