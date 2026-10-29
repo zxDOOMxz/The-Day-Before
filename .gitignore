@@ -1,0 +1,27 @@
+# Build results
+*.exe
+*.dll
+*.pdb
+*.idb
+
+# UE intermediate
+Intermediate/
+DerivedDataCache/
+Saved/
+Build/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.sln
+*.sdf
+*.suo
+*.VC.db
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Graphify (index state)
+.ai/
