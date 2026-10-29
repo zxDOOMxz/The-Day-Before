@@ -1,61 +1,76 @@
-# The Day Before: Aftermath
+# TheDayBefore
 
-> Open-world survival PvPvE extraction game на Unreal Engine 5.8
+Open-world survival FPS extraction game built with Unreal Engine 5.8.
 
-## 📋 Описание
-
-"The Day Before: Aftermath" — open-world survival в сеттинге зомби-апокалипсиса. Сочетает:
-- **Глубину рейдов** Escape from Tarkov (инвентарь, риск, эвакуация)
-- **Атмосферу мира** The Day Before (64 км² живого мира)
-- **Живую экономику** с кланами, торговлей и территориями
-
-## 🎮 Core Pillars
-
-1. **Настоящий мир** — бесшовная карта, день/ночь, погода, сезоны
-2. **Осмысленный лут** — каждый предмет ценен, потеря реальна
-3. **Рейды с последствиями** — выход = риск, эвакуация = награда
-4. **Живая экономика** — NPC, P2P, кланы, динамические цены
-5. **Глубокое выживание** — голод, жажда, болезни, радиация, стресс
-6. **Социальный слой** — кланы, войны, дипломатия
-
-## 📁 Структура
+## Project Structure
 
 ```
 TheDayBefore/
-├── Docs/                    # Документация
-│   ├── GDD.md              # Game Design Document
-│   ├── TechnicalSpec.md    # Техническое ТЗ (TODO)
-│   └── ArtDirection.md     # Арт-направление (TODO)
-├── Source/                  # C++ исходники (UE project)
-├── Content/                 # UE ассеты
-├── Config/                  # Конфигурации
-└── Plugins/                 # Кастомные плагины
+├── Source/                          # C++ source code
+│   └── TheDayBefore/
+│       ├── Characters/              # Character classes
+│       │   ├── TDBCharacter.h/.cpp  # Base FPS character
+│       ├── Camera/                  # Camera systems
+│       │   ├── TDBFirstPersonCameraComponent.h/.cpp  # ADS camera
+│       ├── Tactical/                # Tactical mechanics
+│       │   ├── TDBLeanComponent.h/.cpp      # Lean (Q/E)
+│       │   └── TDBBreathComponent.h/.cpp    # Hold breath (Shift)
+│       └── GameFramework/           # Game framework
+│           ├── TDBGameMode.h/.cpp           # Game rules
+│           └── TDBPlayerController.h/.cpp   # Input handling
+├── Content/                         # UE assets
+│   ├── Characters/                  # Character meshes, animations
+│   ├── Weapons/                     # Weapon models, sounds
+│   ├── Maps/                        # Level files
+│   ├── UI/                          # UI widgets, textures
+│   ├── Input/                       # Input mappings, actions
+│   ├── Audio/                       # Sound effects, music
+│   ├── VFX/                         # Particle effects
+│   └── DataTables/                  # Game data tables
+├── Config/                          # Configuration files
+│   ├── DefaultEngine.ini            # Engine settings
+│   ├── DefaultGame.ini              # Game settings
+│   ├── DefaultInput.ini             # Input configuration
+│   └── DefaultEditor.ini            # Editor settings
+└── Docs/                            # Documentation
+    ├── GDD.md                       # Game Design Document
+    └── TechnicalSpec.md             # Technical Specification
 ```
 
-## 🗺️ Roadmap
+## Key Features
 
-| Фаза | Описание | Срок |
-|------|----------|------|
-| **Phase 0** | Pre-production: GDD, ТЗ, прототипы | 4 недели |
-| **Phase 1** | Core Systems: инвентарь, выживание, стрельба, AI, сеть | 12 недель |
-| **Phase 2** | Content: карта, заражённые, крафт, квесты | 16 недель |
-| **Phase 3** | Social: кланы, экономика, войны | 12 недель |
-| **Phase 4** | Polish: оптимизация, баланс, релиз | 12 недель |
+- **First-Person Perspective**: Full FPS camera system with ADS (Aim Down Sights)
+- **Tactical Mechanics**: Lean, breath control, crouch/prone stances
+- **Survival Systems**: Health, stamina, hunger, thirst
+- **Inventory System**: Grid-based inventory like EFT/Tarkov
+- **Open World**: Large-scale world with multiple biomes
+- **Multiplayer**: Dedicated server architecture
 
-**Целевой релиз:** ~14 месяцев от старта разработки.
+## Development Setup
 
-## 🛠️ Технологии
+### Prerequisites
+- Unreal Engine 5.8
+- Visual Studio 2022 (Windows)
 
-- **Unreal Engine 5.8**
-- **C++ / Blueprints** (гибрид)
-- **Lumen + Nanite** (графика)
-- **Dedicated Server** (мультиплеер)
+### Building
+1. Open `TheDayBefore.uproject` in Unreal Engine
+2. Generate Visual Studio project files
+3. Build in Development Editor configuration
 
-## 📞 Команда
+### Controls
+- **WASD**: Movement
+- **Mouse**: Look/Aim
+- **Shift**: Hold breath (while aiming)
+- **Q/E**: Lean left/right
+- **C**: Crouch/Prone
+- **Space**: Jump
+- **E**: Interact
 
-- **Оркестратор** — ты (дизайн, тестирование, принятие решений)
-- **AI Developer** — я (код, архитектура, документация)
+## Documentation
 
----
+- [Game Design Document](Docs/GDD.md)
+- [Technical Specification](Docs/TechnicalSpec.md)
 
-*"Мы не делаем игру. Мы создаём мир, в который люди захотят вернуться."*
+## Repository
+
+Private repository: https://github.com/zxDOOMxz/The-Day-Before

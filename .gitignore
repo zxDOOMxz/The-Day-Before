@@ -1,27 +1,50 @@
-# Build results
-*.exe
-*.dll
-*.pdb
-*.idb
+# Unreal Engine Ignore File
 
-# UE intermediate
-Intermediate/
-DerivedDataCache/
-Saved/
-Build/
+# Build artifacts
+/Build/
+/Intermediate/
+/DerivedDataCache/
+/Saved/
 
-# IDE
+# IDE files
 .vs/
 .vscode/
 .idea/
 *.sln
 *.sdf
-*.suo
+*.opensdf
 *.VC.db
+*.VC.opendb
 
-# OS
-Thumbs.db
+# Compiled assets
+*.uasset
+*.umap
+!Content/StarterContent/**
+
+# Plugin binaries
+*.dll
+*.exe
+*.pdb
+*.lib
+
+# OS files
 .DS_Store
+Thumbs.db
+Desktop.ini
 
-# Graphify (index state)
+# Temp files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Crash reports
+CrashReportClient/
+UnrealVersionSelector/
+
+# Build products
+*.target
+*.uprojectdir
+
+# OpenCode AI
 .ai/
